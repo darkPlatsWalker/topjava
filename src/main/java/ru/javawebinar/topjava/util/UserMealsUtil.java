@@ -28,23 +28,34 @@ public class UserMealsUtil {
         );
         List<UserMealWithExceed> test = getFilteredWithExceeded(mealList, LocalTime.of(7, 0), LocalTime.of(12,0), 2000);
 
+        //3.Добавлен метод toString в UserMealWithExceed для тестирования
         for (UserMealWithExceed meal : test) {
             System.out.println(meal);
         }
     }
 
+
+    //1.Добавлен словар:
     public static HashMap<LocalDate,Integer> map = new HashMap<>();
 
+    //2.Добавлен метод:
     public static UserMealWithExceed convert(UserMeal userMeal, int limit, Map<LocalDate, Integer> map) {
-        return new UserMealWithExceed(userMeal.getDateTime(), userMeal.getDescription(), userMeal.getCalories(), limit >= map.get(userMeal.getDate()));
+        return new UserMealWithExceed(  userMeal.getDateTime(),
+                                        userMeal.getDescription(),
+                                        userMeal.getCalories(),
+                                limit < map.get(userMeal.getDate()));
     }
 
     public static List<UserMealWithExceed>  getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
 
 
-          return mealList.stream().peek(x -> map.merge(x.getDate(), x.getCalories(), (a, b) -> (a + b))).
-                 filter(x -> TimeUtil.isBetween(x.getDateTime().toLocalTime(), startTime, endTime)).collect(Collectors.toList()).stream().
-                  map(x -> UserMealsUtil.convert(x, caloriesPerDay, map)).collect(Collectors.toList());
+          return  mealList.stream().
+                  peek(x -> map.merge(x.getDate(), x.getCalories(), (a, b) -> (a + b))).
+                  filter(x -> TimeUtil.isBetween(x.getDateTime().toLocalTime(), startTime, endTime)).
+                  collect(Collectors.toList()).
+                  stream().
+                  map(x -> UserMealsUtil.convert(x, caloriesPerDay, map)).
+                  collect(Collectors.toList());
 
 
 
