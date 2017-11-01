@@ -28,14 +28,14 @@ public class UserMealsUtil {
         );
         List<UserMealWithExceed> test = getFilteredWithExceeded(mealList, LocalTime.of(7, 0), LocalTime.of(12,0), 2000);
 
-        //2.Добавлен метод toString в UserMealWithExceed для тестирования
+        //2.Добавлен метод toString в UserMealWithExceed для тестирования 
         for (UserMealWithExceed meal : test) {
             System.out.println(meal);
         }
     }
 
 
-    //1.Добавлен словарь: 
+    //1.Добавлен словарь:
     public static HashMap<LocalDate,Integer> map = new HashMap<>();
 
     public static List<UserMealWithExceed>  getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
